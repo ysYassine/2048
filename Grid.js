@@ -21,6 +21,10 @@ export default class Grid {
     // console.log(this.#cells);
   }
 
+  get cells() {
+    return this.#cells;
+  }
+
   get cellsByColumn() {
     return this.#cells.reduce((cellGrid, cell) => {
       cellGrid[cell.x] = cellGrid[cell.x] || [];
@@ -58,6 +62,7 @@ class Cell {
     this.#x = x;
     this.#y = y;
   }
+
   get x() {
     return this.#x;
   }
@@ -85,6 +90,13 @@ class Cell {
     if (tile == null) return;
     this.#mergeTile.x = this.#x;
     this.#mergeTile.y = this.#y;
+  }
+
+  mergeTiles() {
+    if (this.tile == null || this.mergeTile == null) return;
+    this.tile.value = this.tile.value * 2;
+    this.mergeTile.remove();
+    this.mergeTile = null;
   }
 
   canAccept(tile) {

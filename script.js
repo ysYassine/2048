@@ -11,8 +11,7 @@ function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
 }
 
-function handleInput(e) {
-  console.log(e.key);
+async function handleInput(e) {
   switch (e.key) {
     case "ArrowUp":
       moveUp();
@@ -31,6 +30,7 @@ function handleInput(e) {
       return;
   }
   setupInput();
+  grid.cells.forEach((cell) => cell.mergeTiles());
 }
 function moveUp() {
   return slideTiles(grid.cellsByColumn);
