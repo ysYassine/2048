@@ -30,8 +30,6 @@ body {
 }
 
 .tile {
-  --x: 1;
-  --y: 1;
   --background-lightness: 20%;
   --text-lightness: 80%;
   position: absolute;
