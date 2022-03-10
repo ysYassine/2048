@@ -82,14 +82,14 @@ async function handleInput(e) {
         setupInput();
         return;
       }
-      if (!canMoveRight()) {
-        setupInput();
-        return;
-      }
       await moveLeft();
       break;
 
     case "ArrowRight":
+      if (!canMoveRight()) {
+        setupInput();
+        return;
+      }
       await moveRight();
       break;
 
