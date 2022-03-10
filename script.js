@@ -1,6 +1,10 @@
 import Grid from "./Grid.js";
 import Tile from "./Tile.js";
 
+let startX, startY, endX, endY;
+const minTouchDistance = 100;
+const scrollEvent = { key: "" };
+
 const gameBoard = document.getElementById("game-board");
 const grid = new Grid(gameBoard);
 grid.randomEmptyCell().tile = new Tile(gameBoard);
@@ -9,6 +13,50 @@ setupInput();
 
 function setupInput() {
   window.addEventListener("keydown", handleInput, { once: true });
+  gameBoard.addEventListener("touchstart", handleTouchStart, {
+    once: true,
+    passive: false,
+  });
+  gameBoard.addEventListener("touchend", handleTouchEnd, {
+    once: true,
+    passive: false,
+  });
+}
+
+function handleTouchStart(e) {
+  startX = e.changedTouches["0"].clientX;
+  startY = e.changedTouches["0"].clientY;
+}
+
+function handleTouchEnd(e) {
+  endX = e.changedTouches["0"].clientX;
+  endY = e.changedTouches["0"].clientY;
+  const dX = startX - endX;
+  const dY = startY - endY;
+  // dY positive => Up
+  // dY negative => Down
+  // dX positive => Left
+  // dX negative => Right
+
+  if (Math.abs(dY) > minTouchDistance || Math.abs(dX) > minTouchDistance) {
+    // Vertical Swipe
+    if (Math.abs(dY) > Math.abs(dX)) {
+      if (dY > 0) {
+        scrollEvent.key = "ArrowUp";
+      } else {
+        scrollEvent.key = "ArrowDown";
+      }
+    }
+    // Horizental Swipe
+    else {
+      if (dX > 0) {
+        scrollEvent.key = "ArrowLeft";
+      } else {
+        scrollEvent.key = "ArrowRight";
+      }
+    }
+    handleInput(scrollEvent);
+  } else setupInput();
 }
 
 async function handleInput(e) {
@@ -50,6 +98,9 @@ async function handleInput(e) {
       return;
   }
   grid.cells.forEach((cell) => cell.mergeTiles());
+  console.log(
+    !canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight()
+  );
   const newTile = new Tile(gameBoard);
   grid.randomEmptyCell().tile = newTile;
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight())
