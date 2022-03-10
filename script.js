@@ -106,6 +106,7 @@ async function handleInput(e) {
   if (!canMoveUp() && !canMoveDown() && !canMoveLeft() && !canMoveRight())
     newTile.waitForTransition(true).then(() => {
       alert("You have lost");
+      window.location.reload();
     });
   else setupInput();
 }
