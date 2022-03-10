@@ -2,7 +2,7 @@ import Grid from "./Grid.js";
 import Tile from "./Tile.js";
 
 let startX, startY, endX, endY;
-const minTouchDistance = 100;
+const minTouchDistance = 30;
 const scrollEvent = { key: "" };
 
 const gameBoard = document.getElementById("game-board");
